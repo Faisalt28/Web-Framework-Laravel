@@ -219,7 +219,7 @@
           </div>
         </div>
       </div>
-
+      
       <!-- Page body -->
       <div class="page-body">
         <div class="container-xl">
@@ -230,14 +230,9 @@
           <!-- Poster -->
           <div class="card-header p-0">
             @if ($movie->poster)
-            <img src="https://picsum.photos/300/200" alt="Poster" class="card-img-top"
-    style="height: 200px; object-fit: cover; border-top-left-radius: 8px; border-top-right-radius: 8px;">
-
+        <img src="{{ asset('storage/' . $movie->poster) }}" alt="Poster">
       @else
-    <div class="d-flex align-items-center justify-content-center"
-    style="height: 200px; background: #f8f9fa; color: #6c757d; border-top-left-radius: 8px; border-top-right-radius: 8px;">
-    <span>Belum ada poster</span>
-    </div>
+    <img src="https://picsum.photos/300/200" alt="No Poster">
   @endif
           </div>
           <!-- Card Body -->

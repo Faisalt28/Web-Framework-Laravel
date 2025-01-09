@@ -255,11 +255,10 @@
               {{ Str::limit($cast->biodata, 50) }}
               </td>
               <td class="sort-avatar">
-              @if (optional($cast)->avatar)
-          <img src="https://i.pravatar.cc/150?u=default" alt="Avatar"
-          style="max-width: 50px; height: auto;">
+              @if ($cast->avatar)
+          <img src="{{ asset('storage/' . $cast->avatar) }}" alt="Avatar">
         @else
-        <span>Belum ada avatar</span>
+        <img src="./static/default-avatar.jpg" alt="No Avatar">
       @endif
               </td>
               <td class="sort-aksi">

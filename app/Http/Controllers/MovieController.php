@@ -49,7 +49,7 @@ class MovieController extends Controller
     $posterPath = $movie->poster;
     if ($request->hasFile('poster')) {
       // Menghapus poster lama jika ada
-      if ($posterPath) {
+      if ($posterPath && file_exists(storage_path('app/public/' . $posterPath))) {
         unlink(storage_path('app/public/' . $posterPath));
       }
       // Menyimpan poster baru
@@ -63,12 +63,11 @@ class MovieController extends Controller
       'poster' => $posterPath,
       'year' => $request->year,
       'available' => $request->available,
-      'genre_id' => $request->genre_id, // Assuming genre is also updated
+      'genre_id' => $request->genre_id,
     ]);
 
-    // Menambahkan pemeran (casts) ke film
+    // Mengupdate pemeran (casts)
     if ($request->has('casts')) {
-      // Mengupdate pemeran (casts) menggunakan sync untuk mengganti semua pemeran yang terkait
       $movie->casts()->sync($request->casts);
     }
 
@@ -94,17 +93,12 @@ class MovieController extends Controller
       'poster' => $posterPath,
       'year' => $request->year,
       'available' => $request->available,
-      'genre_id' => $request->genre_id, // Assuming the genre is selected as well
+      'genre_id' => $request->genre_id,
     ]);
 
     // Menambahkan pemeran (casts) ke film
     if ($request->has('casts')) {
-      foreach ($request->casts as $castId) {
-        CastMovie::create([
-          'movie_id' => $movie->id,
-          'cast_id' => $castId,
-        ]);
-      }
+      $movie->casts()->sync($request->casts);
     }
 
     return redirect()->route('movies.index')->with('success', 'Film berhasil ditambahkan!');
@@ -115,26 +109,24 @@ class MovieController extends Controller
    */
   public function create()
   {
-    $genres = Genre::all(); // Get all genres
-    $casts = Cast::all(); // Get all actors (cast)
-
-    return view('movie.create', compact('genres', 'casts'));
+      $genres = Genre::all();
+      $casts = Cast::all();
+      return view('movie.create', compact('genres', 'casts'));
   }
-
 
   /**
    * Remove the specified resource from storage.
    */
   public function destroy(Movie $movie)
   {
-    // Menghapus poster file jika ada
-    if ($movie->poster) {
-      unlink(storage_path('app/public/' . $movie->poster));
-    }
+      // Menghapus poster file jika ada
+      if ($movie->poster && file_exists(storage_path('app/public/' . $movie->poster))) {
+          unlink(storage_path('app/public/' . $movie->poster));
+      }
 
-    // Menghapus film dari database
-    $movie->delete();
+      // Menghapus film dari database
+      $movie->delete();
 
-    return redirect()->route('movies.index')->with('success', 'Film berhasil dihapus!');
+      return redirect()->route('movies.index')->with('success', 'Film berhasil dihapus!');
   }
 }
