@@ -221,55 +221,49 @@
       </div>
 
 
-      <!-- Page body -->
+      <!-- Page Body -->
       <div class="page-body">
         <div class="container-xl">
           <div class="card">
             <div class="card-body">
+              <h5 class="card-title">Daftar Pemeran</h5>
               <div id="table-default" class="table-responsive">
-                <table class="table" id="cast-table">
-                  <thead>
+                <table class="table table-striped table-hover" id="cast-table">
+                  <thead class="thead-dark">
                     <tr>
-                      <th>
-                        <button class="table-sort" data-sort="sort-name">Nama</button>
-                      </th>
-                      <th>
-                        <button class="table-sort" data-sort="sort-age">Usia</button>
-                      </th>
-                      <th>
-                        <button class="table-sort" data-sort="sort-biodata">Biodata</button>
-                      </th>
-                      <th>
-                        <button class="table-sort" data-sort="sort-avatar">Avatar</button>
-                      </th>
+                      <th>Nama</th>
+                      <th>Usia</th>
+                      <th>Biodata</th>
+                      <th>Avatar</th>
                       <th>Aksi</th>
                     </tr>
                   </thead>
                   <tbody class="table-tbody">
                     @forelse ($casts as $cast)
             <tr>
-              <td class="sort-name">{{ $cast->name }}</td>
-              <td class="sort-age">{{ $cast->age }}</td>
-              <td class="sort-biodata">
+              <td class="align-middle">{{ $cast->name }}</td>
+              <td class="align-middle">{{ $cast->age }}</td>
+              <td class="align-middle">
               {{-- Truncate biodata to a limit of 50 characters --}}
               {{ Str::limit($cast->biodata, 50) }}
               </td>
-              <td class="sort-avatar">
+              <td class="align-middle text-center">
               @if ($cast->avatar)
-          <img src="{{ asset('storage/' . $cast->avatar) }}" alt="Avatar">
+          <img src="{{ asset('storage/' . $cast->avatar) }}" alt="Avatar"
+          style="width: 60px; height: 60px; object-fit: cover; border-radius: 50%;">
         @else
-        <img src="./static/default-avatar.jpg" alt="No Avatar">
+        <img src="./static/default-avatar.jpg" alt="No Avatar"
+        style="width: 60px; height: 60px; object-fit: cover; border-radius: 50%;">
       @endif
               </td>
-              <td class="sort-aksi">
+              <td class="align-middle">
               <a href="{{ route('casts.show', $cast->id) }}" class="btn btn-sm btn-info">Lihat</a>
               <a href="{{ route('casts.edit', $cast->id) }}" class="btn btn-sm btn-warning">Ubah</a>
               <form action="{{ route('casts.destroy', $cast->id) }}" method="POST" style="display:inline;">
                 @csrf
                 @method('DELETE')
                 <button type="submit" class="btn btn-sm btn-danger"
-                onclick="return confirm('Apakah Anda yakin ingin menghapus pemeran ini?')">Hapus
-                </button>
+                onclick="return confirm('Apakah Anda yakin ingin menghapus pemeran ini?')">Hapus</button>
               </form>
               </td>
             </tr>
@@ -285,6 +279,7 @@
           </div>
         </div>
       </div>
+
 
 
       <footer class="footer footer-transparent d-print-none">
